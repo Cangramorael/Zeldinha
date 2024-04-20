@@ -36,6 +36,7 @@ public class Walking : State {
         // Create vector
         Vector3 walkVector = new Vector3(controller.movementVector.x, 0, controller.movementVector.y);
         walkVector = controller.GetFoward() * walkVector;
+        walkVector = Vector3.ProjectOnPlane(walkVector, controller.slopeNormal);
         walkVector *= controller.movementSpeed;
 
         // Apply input to character

@@ -34,10 +34,7 @@ public class CannonScript : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        // Ignore if game  is over
-        if(GameManager.Instance.isGameOver) return;
-        
+    {   
         // Update cooldown
         cooldown -= Time.deltaTime;
         if(cooldown <= 0) {
