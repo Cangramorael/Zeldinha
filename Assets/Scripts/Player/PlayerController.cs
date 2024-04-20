@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnGUI() {
+    /*void OnGUI() {
         string s= stateMachine.currentStateName + " - " + isGrounded + " - " + transform.position;
         GUI.Label(new Rect(5,5,400,100), s);
     }
@@ -167,5 +167,10 @@ public class PlayerController : MonoBehaviour
         // Draw ray
         Gizmos.color = isGrounded ? Color.green : Color.red;
         Gizmos.DrawLine(origin, direction * maxDistance);
+    }*/
+
+    void OnGUI(){
+        string s= stateMachine.currentStateName + " - " + isOnSlope;
+        GUI.Label(new Rect(5,5,400,100), s);
     }
 }

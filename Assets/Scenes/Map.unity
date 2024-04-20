@@ -11467,10 +11467,35 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0.72918504
       objectReference: {fileID: 0}
+    - target: {fileID: 5886389894313412033, guid: 59dd6cbc42838f64dbe97d956632a1e7,
+        type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5886389894313412033, guid: 59dd6cbc42838f64dbe97d956632a1e7,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5886389894313412034, guid: 59dd6cbc42838f64dbe97d956632a1e7,
+        type: 3}
+      propertyPath: jumpPower
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5886389894313412034, guid: 59dd6cbc42838f64dbe97d956632a1e7,
+        type: 3}
+      propertyPath: maxSlopeAngle
+      value: 45
+      objectReference: {fileID: 0}
     - target: {fileID: 5886389894313412034, guid: 59dd6cbc42838f64dbe97d956632a1e7,
         type: 3}
       propertyPath: movementSpeed
-      value: 30
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5886389894313412034, guid: 59dd6cbc42838f64dbe97d956632a1e7,
+        type: 3}
+      propertyPath: movementSmoothness
+      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59dd6cbc42838f64dbe97d956632a1e7, type: 3}
