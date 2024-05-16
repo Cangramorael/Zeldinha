@@ -17,11 +17,18 @@ public class Walking : State {
     public override void Update() {
         base.Update();
 
+        //Switch to Attack
+        if (controller.AttemptToAttack()) {
+            return;
+        }
+
+        //Switch to Jump
         if(controller.hasJumpInput) {
             controller.stateMachine.ChangeState(controller.jumpState);
             return;
         }
 
+        //Switch to Idle
         if(controller.movementVector.IsZero()) {
             controller.stateMachine.ChangeState(controller.idleState);
             return;

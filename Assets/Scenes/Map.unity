@@ -11484,6 +11484,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5886389894313412034, guid: 59dd6cbc42838f64dbe97d956632a1e7,
         type: 3}
+      propertyPath: attackStages
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5886389894313412034, guid: 59dd6cbc42838f64dbe97d956632a1e7,
+        type: 3}
       propertyPath: maxSlopeAngle
       value: 45
       objectReference: {fileID: 0}
@@ -11496,6 +11501,41 @@ PrefabInstance:
         type: 3}
       propertyPath: movementSmoothness
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5886389894313412034, guid: 59dd6cbc42838f64dbe97d956632a1e7,
+        type: 3}
+      propertyPath: attackStageDurations.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5886389894313412034, guid: 59dd6cbc42838f64dbe97d956632a1e7,
+        type: 3}
+      propertyPath: attackStageDurations.Array.data[0]
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5886389894313412034, guid: 59dd6cbc42838f64dbe97d956632a1e7,
+        type: 3}
+      propertyPath: attackStageDurations.Array.data[1]
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5886389894313412034, guid: 59dd6cbc42838f64dbe97d956632a1e7,
+        type: 3}
+      propertyPath: attackStageDurations.Array.data[2]
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5886389894313412034, guid: 59dd6cbc42838f64dbe97d956632a1e7,
+        type: 3}
+      propertyPath: attackStageMaxIntervals.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5886389894313412034, guid: 59dd6cbc42838f64dbe97d956632a1e7,
+        type: 3}
+      propertyPath: attackStageMaxIntervals.Array.data[0]
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5886389894313412034, guid: 59dd6cbc42838f64dbe97d956632a1e7,
+        type: 3}
+      propertyPath: attackStageMaxIntervals.Array.data[1]
+      value: 0.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59dd6cbc42838f64dbe97d956632a1e7, type: 3}

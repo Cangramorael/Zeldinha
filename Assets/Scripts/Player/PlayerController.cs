@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Idle idleState;
     [HideInInspector] public Walking walkingState;
     [HideInInspector] public Jump jumpState;
+    [HideInInspector] public Attack attackState;
     [HideInInspector] public Dead deadState;
 
     // Internal Properties
@@ -36,6 +37,12 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool isOnSlope;
     [HideInInspector] public Vector3 slopeNormal;
 
+    // Attack
+    [Header("Attack")]
+    public int attackStages;
+    public List<float> attackStageDurations;
+    public List<float> attackStageMaxIntervals;
+
     void Awake() {
         thisRigidbody = GetComponent<Rigidbody>();
         thisAnimator = GetComponent<Animator>();
@@ -50,6 +57,7 @@ public class PlayerController : MonoBehaviour
         idleState = new Idle(this);
         walkingState = new Walking(this);
         jumpState = new Jump(this);
+        attackState = new Attack(this);
         deadState = new Dead(this);
         stateMachine.ChangeState(idleState);
     }
@@ -112,6 +120,20 @@ public class PlayerController : MonoBehaviour
 
         //Apply rotation
         thisRigidbody.MoveRotation(newRotation);
+    }
+
+    public bool AttemptToAttack() {
+        if (Input.GetMouseButtonDown(0)) {
+            var isAttacking = stateMachine.currentStateName == attackState.name;
+            var canAttack = !isAttacking || attackState.CanSwitchStages();
+            if (canAttack) {
+                var attackStage = isAttacking ? (attackState.stage + 1) : 1;
+                attackState.stage = attackStage;
+                stateMachine.ChangeState(attackState);
+                return true;
+            }
+        }
+        return false;
     }
 
     private void DetectGround() {
