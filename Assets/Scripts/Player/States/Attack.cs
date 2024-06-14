@@ -6,6 +6,7 @@ public class Attack : State {
 
     public int stage = 1;
     private float stateTime;
+    private bool firstFixedUpdate;
 
     public Attack(PlayerController controller) : base ("Attack") {
         this.controller = controller;
@@ -22,12 +23,19 @@ public class Attack : State {
 
         //Reset variables
         stateTime = 0;
+        firstFixedUpdate = true;
 
         //Set animator trigger
         controller.thisAnimator.SetTrigger("tAttack" + stage);
+
+        //Toggle hitbox
+        controller.swordHitbox.SetActive(true);
     }
     public override void Exit() {
         base.Exit();
+
+        //Toggle hitbox
+        controller.swordHitbox.SetActive(false);
     }
     public override void Update() {
         base.Update();
@@ -51,6 +59,19 @@ public class Attack : State {
     }
     public override void FixedUpdate() {
         base.FixedUpdate();
+
+        if (firstFixedUpdate) {
+            firstFixedUpdate = false;
+
+            // Look to input
+            controller.RotateBodyToFaceInput(alpha: 1);
+
+            // Impulse
+            var impulseValue = controller.attackStageImpulses[stage - 1];
+            var impulseVector = controller.thisRigidbody.rotation * Vector3.forward;
+            impulseVector *= impulseValue;
+            controller.thisRigidbody.AddForce(impulseVector, ForceMode.Impulse);
+        }
     }
 
     public bool CanSwitchStages() {

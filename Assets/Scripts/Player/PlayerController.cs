@@ -42,6 +42,9 @@ public class PlayerController : MonoBehaviour
     public int attackStages;
     public List<float> attackStageDurations;
     public List<float> attackStageMaxIntervals;
+    public List<float> attackStageImpulses;
+    public GameObject swordHitbox;
+    public float swordKnockbackImpulse;
 
     void Awake() {
         thisRigidbody = GetComponent<Rigidbody>();
@@ -60,6 +63,9 @@ public class PlayerController : MonoBehaviour
         attackState = new Attack(this);
         deadState = new Dead(this);
         stateMachine.ChangeState(idleState);
+
+        //Toggle hitbox
+       swordHitbox.SetActive(false);
     }
 
     // Update is called once per frame
@@ -101,14 +107,28 @@ public class PlayerController : MonoBehaviour
         stateMachine.FixedUpdate();
     }
 
+    public void OnSwordCollisionEnter(Collider other) {
+        var otherObject = other.gameObject;
+        var otherRigidbody = otherObject.GetComponent<Rigidbody>();
+        var isTarget = otherObject.layer == LayerMask.NameToLayer("Target");
+        if (isTarget && otherRigidbody != null) {
+            var positionDiff = otherObject.transform.position - gameObject.transform.position;
+            var impulseVector = new Vector3(positionDiff.normalized.x, 0, positionDiff.normalized.z);
+            impulseVector *= swordKnockbackImpulse;
+            otherRigidbody.AddForce(impulseVector, ForceMode.Impulse);
+        }
+    }
+
     public Quaternion GetFoward() {
         Camera camera = Camera.main;
         float eulerY = camera.transform.eulerAngles.y;
         return Quaternion.Euler(0, eulerY, 0);
     }
 
-    public void RotateBodyToFaceInput() {
+    public void RotateBodyToFaceInput(float alpha = 0f) {
         if(movementVector.IsZero()) return;
+
+        float beta = alpha == 0f ? movementSmoothness : alpha;
 
         // Calculate rotation
         Camera camera = Camera.main;
@@ -116,7 +136,7 @@ public class PlayerController : MonoBehaviour
         Quaternion q1 = Quaternion.LookRotation(inputVector, Vector3.up);
         Quaternion q2 = Quaternion.Euler(0, camera.transform.eulerAngles.y, 0);
         Quaternion toRotation = q1 * q2;
-        Quaternion newRotation = Quaternion.LerpUnclamped(transform.rotation, toRotation, movementSmoothness);
+        Quaternion newRotation = Quaternion.LerpUnclamped(transform.rotation, toRotation, beta);
 
         //Apply rotation
         thisRigidbody.MoveRotation(newRotation);
