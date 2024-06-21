@@ -10,9 +10,10 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Walking walkingState;
     [HideInInspector] public Jump jumpState;
     [HideInInspector] public Attack attackState;
+    [HideInInspector] public Defend defendState;
     [HideInInspector] public Dead deadState;
 
-    // Internal Properties
+    // Components
     [HideInInspector] public Rigidbody thisRigidbody;
     [HideInInspector] public Animator thisAnimator;
     [HideInInspector] public Collider thisCollider;
@@ -46,6 +47,12 @@ public class PlayerController : MonoBehaviour
     public GameObject swordHitbox;
     public float swordKnockbackImpulse;
 
+    // Defend
+    [Header("Defend")]
+    public GameObject shieldHitbox;
+    public float shieldKnockbackImpulse = 10;
+    [HideInInspector] public bool isDefenseInput;
+
     void Awake() {
         thisRigidbody = GetComponent<Rigidbody>();
         thisAnimator = GetComponent<Animator>();
@@ -61,11 +68,13 @@ public class PlayerController : MonoBehaviour
         walkingState = new Walking(this);
         jumpState = new Jump(this);
         attackState = new Attack(this);
+        defendState = new Defend(this);
         deadState = new Dead(this);
         stateMachine.ChangeState(idleState);
 
         //Toggle hitbox
        swordHitbox.SetActive(false);
+       shieldHitbox.SetActive(false);
     }
 
     // Update is called once per frame
@@ -79,6 +88,9 @@ public class PlayerController : MonoBehaviour
         float inputY = isUp ? 1 : isDown ? -1 : 0;
         movementVector = new Vector2(inputX, inputY);
         hasJumpInput = Input.GetKey(KeyCode.Space);
+
+        // Check defense input
+        isDefenseInput = Input.GetMouseButton(1);
 
         // Update Animator
         float velocity = thisRigidbody.velocity.magnitude;
@@ -115,6 +127,18 @@ public class PlayerController : MonoBehaviour
             var positionDiff = otherObject.transform.position - gameObject.transform.position;
             var impulseVector = new Vector3(positionDiff.normalized.x, 0, positionDiff.normalized.z);
             impulseVector *= swordKnockbackImpulse;
+            otherRigidbody.AddForce(impulseVector, ForceMode.Impulse);
+        }
+    }
+
+    public void OnShieldCollisionEnter(Collider other) {
+        var otherObject = other.gameObject;
+        var otherRigidbody = otherObject.GetComponent<Rigidbody>();
+        var isTarget = true;
+        if (isTarget && otherRigidbody != null) {
+            var positionDiff = otherObject.transform.position - gameObject.transform.position;
+            var impulseVector = new Vector3(positionDiff.normalized.x, 0, positionDiff.normalized.z);
+            impulseVector *= shieldKnockbackImpulse;
             otherRigidbody.AddForce(impulseVector, ForceMode.Impulse);
         }
     }
@@ -195,11 +219,11 @@ public class PlayerController : MonoBehaviour
     }
 
     /*void OnGUI() {
-        string s= stateMachine.currentStateName + " - " + isGrounded + " - " + transform.position;
-        GUI.Label(new Rect(5,5,400,100), s);
-    }
+        string s= stateMachine.currentStateName + " - " + isDefenseInput;
+        GUI.Label(new Rect(50,50,400,100), s);
+    }*/
 
-    void OnDrawGizmos() {
+    /*void OnDrawGizmos() {
         if(!thisCollider) return;
 
         Vector3 origin = transform.position;
@@ -211,8 +235,8 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawLine(origin, direction * maxDistance);
     }*/
 
-    void OnGUI(){
+    /*void OnGUI(){
         string s= stateMachine.currentStateName + " - " + isOnSlope;
         GUI.Label(new Rect(5,5,400,100), s);
-    }
+    }*/
 }

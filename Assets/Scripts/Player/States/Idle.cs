@@ -22,6 +22,12 @@ public class Idle : State {
             return;
         }
 
+         //Switch to Defense
+        if (controller.isDefenseInput) {
+            controller.stateMachine.ChangeState(controller.defendState);
+            return;
+        }
+
         //Switch to Jump
         if(controller.hasJumpInput) {
             controller.stateMachine.ChangeState(controller.jumpState);
